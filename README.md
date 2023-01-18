@@ -1,4 +1,7 @@
 # Backend for Delivery Fee Calculator
+
+By [Songlin Jiang](https://github.com/HollowMan6)
+
 This is an HTTP API which could be used for calculating the delivery fee. It is written in Python using the Flask framework. The API is documented using Swagger Editor in openapi.yaml. The API is deployed to Azure and can be accessed at https://delivery-fee-calculator.azurewebsites.net/
 
 ## Codebase Tree
