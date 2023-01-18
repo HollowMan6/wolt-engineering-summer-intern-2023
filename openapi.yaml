@@ -1,0 +1,84 @@
+# https://editor.swagger.io/
+openapi: "3.0.0"
+
+info:
+  title: "Delivery Fee Calculation API"
+  version: "0.1.0"
+
+components:
+  schemas:
+    Calculation:
+      type: object
+      required:
+        - cart_value
+        - delivery_distance
+        - number_of_items
+        - time
+      properties:
+        cart_value:
+          type: integer
+          minimum: 1
+        delivery_distance:
+          type: integer
+          minimum: 1
+        number_of_items:
+          type: integer
+          minimum: 1
+        time:
+          type: string
+          format: date-time
+    Fee:
+      type: object
+      properties:
+        delivery_fee:
+          type: integer
+          minimum: 0
+          maximum: 1500
+    Unknown:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+          - "Invalid request body"
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+          - "Missing parameter: cart_value"
+          - "Missing parameter: delivery_distance"
+          - "Missing parameter: number_of_items"
+          - "Missing parameter: time"
+          - "Invalid parameter: cart_value"
+          - "Invalid parameter: delivery_distance"
+          - "Invalid parameter: number_of_items"
+          - "Invalid parameter: time"
+paths:
+  /:
+    post:
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Calculation'
+      responses:
+        '200':
+          description: Respond with the delivery fee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fee'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unknown'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
