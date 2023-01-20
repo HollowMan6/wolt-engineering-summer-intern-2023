@@ -2,19 +2,13 @@
 
 By [Songlin Jiang](https://github.com/HollowMan6)
 
-This is an HTTP API which could be used for calculating the delivery fee. It is written in Python using the Flask framework. The API is documented using Swagger Editor in openapi.yaml. The API is deployed to Azure and can be accessed at https://delivery-fee-calculator.azurewebsites.net/
+This is an HTTP API which could be used for calculating the delivery fee. It is written in Python using the Flask framework. The API is documented using Swagger Editor in openapi.yaml. The build system for the project is bazel. The API is deployed to Azure and can be accessed at https://delivery-fee-calculator.azurewebsites.net/
 
-## Codebase Tree
+## Codebase Tree (Some files are omitted)
 ```bash
 .
 ├── app.py                 # main application
 ├── Dockerfile             # Dockerfile for building the production image
-├── .github            
-│   └── workflows          # GitHub Actions workflows
-│       ├── main_delivery-fee-calculator.yml
-│       ├── pylint.yml     # workflow for running pylint
-│       └── python-app.yml # workflow for running tests and coverage
-├── .gitignore             # gitignore file
 ├── openapi.yaml           # openapi specification
 ├── .pylintrc              # configuration for pylint
 ├── README.md              # this file
@@ -23,11 +17,8 @@ This is an HTTP API which could be used for calculating the delivery fee. It is 
 ├── setup.cfg              # configuration for pytest and coverage
 └── tests
     ├── conftest.py        # pytest configuration
-    ├── __init__.py
     ├── test_api.py        # tests for the API
     └── test.rest          # test file for VSCode REST Client
-└── .vscode                # VSCode configuration
-    └── settings.json      # VSCode settings
 ```
 
 ## Specification
@@ -83,12 +74,21 @@ source venv/bin/activate
 pip install -r requirements-dev.txt
 ```
 
+You can also [install the bazel](https://bazel.build/install) without the above steps for easily running and testing the application.
+
 ### Run the application
+Run with flask directly:
 ```bash
-flask run
+FLASK_APP=src/app.py flask run
+```
+
+Or using bazel:
+```bash
+bazel run //src:app
 ```
 
 ### Run the tests and coverage
+Directly:
 ```bash
 pytest
 coverage run -m pytest
@@ -96,16 +96,25 @@ coverage report
 coverage html
 ```
 
-The latest coverage is 100%:
+Or using bazel to run the tests:
+```bash
+bazel test //...
+```
+
+The coverage is 100% (The missed one is the `create_app().run()` and it should be ignored):
 ```log
 tests/test_api.py ..........................................             [100%]
 
 ============================== 42 passed in 0.21s ==============================
-Name     Stmts   Miss Branch BrPart  Cover
-------------------------------------------
-app.py      40      0     18      0   100%
-------------------------------------------
-TOTAL       40      0     18      0   100%
+Name                            Stmts   Miss Branch BrPart  Cover
+-----------------------------------------------------------------
+deps/calculator/calculator.py      12      0      2      0   100%
+src/app.py                         33      1     16      1    96%
+tests/__init__.py                   0      0      0      0   100%
+tests/conftest.py                  12      1      0      0    92%
+tests/test_api.py                  30      0     10      0   100%
+-----------------------------------------------------------------
+TOTAL                              87      2     28      1    97%
 ```
 
 ## Deployment
