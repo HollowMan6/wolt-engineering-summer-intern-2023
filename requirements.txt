@@ -1,6 +1,6 @@
 ######################################################################
 ## This includes all the modules and the fixed version dependencies  #
 ######################################################################
-Flask==2.2.2
+Flask==2.3.2
 python_dateutil==2.8.2
 gunicorn==20.1.0
