@@ -18,7 +18,7 @@ exceptiongroup==1.1.0
     # via pytest
 flask==2.2.2
     # via -r requirements.in
-gunicorn==20.1.0
+gunicorn==22.0.0
     # via -r requirements.in
 iniconfig==2.0.0
     # via pytest
