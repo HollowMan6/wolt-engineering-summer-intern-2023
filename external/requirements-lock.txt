@@ -44,7 +44,7 @@ pluggy==1.0.0
     # via pytest
 pylint==2.15.10
     # via -r requirements.in
-pytest==7.2.1
+pytest==9.0.3
     # via -r requirements.in
 python-dateutil==2.8.2
     # via -r requirements.in
